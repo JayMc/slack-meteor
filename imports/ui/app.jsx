@@ -7,10 +7,18 @@ import AccountsUIWrapper from './accounts-ui-wrapper.jsx';
 
 class App extends Component {
 
+	componentDidMount () {
+		setTimeout(() => {
+			const { currentChannel, currentUser } = this.props;
+			if (currentChannel) {
+				currentChannel.updateLastRead(currentUser);
+			}
+		}, 1000);
+	}
+
 	render() {
 		const { channels, currentUser } = this.props;
-		console.log('channels',channels);
-		console.log('currentUser',currentUser);
+
 		return (
 			<div className="container">
 
@@ -19,9 +27,16 @@ class App extends Component {
 				<div>
 					Channels
 					<ul>
-						{channels.length > 0 && channels.map(channel => (
-							<li key={channel._id}>{channel.name}</li>
-						))}
+						{channels.length > 0 && channels.map(channel => {
+							const members = Object.keys(channel.members).map(member => {
+								return channel.members[member].username ? channel.members[member].username : 'unknown'
+							});
+							const name = channel.name
+
+							return (
+								<li key={channel._id}>{name} ({members.join(', ')})</li>
+							);
+						})}
 					</ul>
 				</div>
 
@@ -38,8 +53,10 @@ class App extends Component {
 }
 
 export default createContainer(() => {
+
 	return {
 		channels: Channel.find({}).fetch(),
+		currentChannel: Channel.findOne({}),
 		currentUser: Meteor.user(),
 	};
 }, App);

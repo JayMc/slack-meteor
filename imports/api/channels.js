@@ -8,6 +8,24 @@ export const Channel = Class.create({
 	collection: Channels,
 	fields: {
 		name: String,
-		createdAt: Date
+		createdAt: Date,
+		members: Object, // who has access and when they last viewed which drives unread count and read receipt
+	},
+	meteorMethods: {
+		updateLastRead(user) {
+
+			if (user) {
+				const { _id, username } = user
+				this.members[_id] = {
+					username,
+					lastViewedAt: new Date,
+				}
+				return this.save()
+			}
+			else {
+				return false
+			}
+		},
+
 	}
 });
