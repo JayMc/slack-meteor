@@ -5,24 +5,24 @@ import { Meteor } from 'meteor/meteor';
 import { Channel } from '../api/channels.js';
 import AccountsUIWrapper from './accounts-ui-wrapper.jsx';
 import ChannelsList from './channels-list.jsx';
+import CommentsList from './comments-list.jsx';
 
 class App extends Component {
 
 	constructor(props) {
 		super(props)
 		this.state = {
-			currentChannel: null
+			currentChannelId: null
 		}
 	}
 
 	handleChangeChannel (id) {
-		const { currentChannel, currentUser } = this.props;
+		const { channels, currentUser } = this.props;
 		// set current channel
-		this.setState({currentChannel: id})
+		this.setState({currentChannelId: id})
 		// update last read
-		if (currentChannel) {
-			currentChannel.updateLastRead(currentUser);
-		}
+		const channel = channels.find(channel => channel._id === id)
+		channel.updateLastRead(currentUser);
 	}
 
 	handleChannelClick = (id) => {
@@ -31,25 +31,26 @@ class App extends Component {
 
 	render() {
 		const { channels, currentUser } = this.props;
-		const { currentChannel } = this.state;
+		const { currentChannelId } = this.state;
 
 		return (
 			<div className="container">
 
 				<AccountsUIWrapper />
 
-				<ChannelsList
-					channels={channels}
-					handleChannelClick={this.handleChannelClick}
-				/>
+				{currentUser && channels &&
+					<ChannelsList
+						currentChannelId={currentChannelId}
+						currentUser={currentUser}
+						channels={channels}
+						handleChannelClick={this.handleChannelClick}
+						/>
+				}
 
-				{currentChannel &&
-					<div>
-						Comments
-						<ul>
-							<li>comment 1</li>
-						</ul>
-					</div>
+				{currentChannelId && channels &&
+					<CommentsList
+						currentChannelId={currentChannelId}
+					/>
 				}
 
 			</div>
