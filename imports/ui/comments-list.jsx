@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import moment from 'moment';
 
@@ -8,7 +9,9 @@ class CommentsList extends Component {
 
 	handleSendComment () {
 		const { channel, currentUser } = this.props;
-		channel.addComment(currentUser, 'Blah2')
+		const comment = ReactDOM.findDOMNode(this.refs.commentInput).value.trim();
+		ReactDOM.findDOMNode(this.refs.commentInput).value = '';
+		channel.addComment(currentUser, comment)
 	}
 
 	handleComposeComment = () => {
@@ -31,6 +34,7 @@ class CommentsList extends Component {
 									style={{
 										color: moment(memberSelf.lastViewedAt).isBefore(comment.createdAt) ? 'green' : 'black'
 									}}
+									onClick={() => channel.updateLastRead(currentUser)}
 								>
 									{comment.comment} {comment.username}
 								</span>
@@ -38,6 +42,12 @@ class CommentsList extends Component {
 						);
 					})}
 				</ul>
+				<input
+					type="text"
+					ref="commentInput"
+					placeholder="comment"
+					onClick={() => channel.updateLastRead(currentUser)}
+				/>
 				<button onClick={this.handleComposeComment}>Send</button>
 			</div>
 		)

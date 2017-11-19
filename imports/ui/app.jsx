@@ -22,7 +22,11 @@ class App extends Component {
 		this.setState({currentChannelId: id})
 		// update last read
 		const channel = channels.find(channel => channel._id === id)
-		channel.updateLastRead(currentUser);
+
+		// delay so the user has time to see what is new when they enter the channel
+		setTimeout(() => {
+			channel.updateLastRead(currentUser);
+		}, 3000)
 	}
 
 	handleChannelClick = (id) => {
