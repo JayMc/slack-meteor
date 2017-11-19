@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
 
-import { Channel } from '../api/channels.js';
+import Channel from '../api/channels.js';
 import AccountsUIWrapper from './accounts-ui-wrapper.jsx';
 import ChannelsList from './channels-list.jsx';
 import CommentsList from './comments-list.jsx';

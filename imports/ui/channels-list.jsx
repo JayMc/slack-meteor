@@ -1,7 +1,22 @@
 import React, { PureComponent } from 'react';
+import ReactDOM from 'react-dom';
 import moment from 'moment';
+import Channel from '../api/channels.js';
 
 export default class ChannelsList extends PureComponent {
+
+	handleSendChannel () {
+		const { currentUser } = this.props;
+		Channel.createChannel({
+			name: ReactDOM.findDOMNode(this.refs.channelInput).value.trim(),
+			user: currentUser,
+		})
+		ReactDOM.findDOMNode(this.refs.channelInput).value = '';
+	}
+
+	handleCreateChannel = () => {
+		return this.handleSendChannel()
+	}
 
 	render() {
 		const { currentChannelId, currentUser, channels, handleChannelClick } = this.props;
@@ -31,6 +46,14 @@ export default class ChannelsList extends PureComponent {
 						);
 					})}
 				</ul>
+
+				<input
+					type="text"
+					ref="channelInput"
+					placeholder="channel"
+				/>
+			<button onClick={this.handleCreateChannel}>Create</button>
+
 			</div>
 		)
 	}

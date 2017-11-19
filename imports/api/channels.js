@@ -5,9 +5,10 @@ import { Random } from 'meteor/random'
 const Channels = new Mongo.Collection('channels');
 const recentCommentsLimit = 10;
 
-export const Channel = Class.create({
+const Channel = Class.create({
 	name: 'Channel',
 	collection: Channels,
+	secured: false,
 	fields: {
 		name: String,
 		createdAt: Date,
@@ -59,7 +60,29 @@ export const Channel = Class.create({
 			]
 
 			return this.save();
-		}
+		},
 
 	}
 });
+
+Channel.createChannel = (newChannel) => {
+	const {
+		user: {
+			_id: userId,
+			username,
+		},
+		name: channelName,
+	} = newChannel;
+
+	const channel = new Channel()
+	channel.name = channelName;
+	channel.createdAt = new Date()
+	channel.members = {}
+	channel.members[userId] = {
+		username,
+		lastViewedAt: new Date(),
+	}
+	return channel.save()
+}
+
+export default Channel;

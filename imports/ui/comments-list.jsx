@@ -3,12 +3,13 @@ import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import moment from 'moment';
 
-import { Channel } from '../api/channels.js';
+import Channel from '../api/channels.js';
 
 class CommentsList extends Component {
 
 	handleSendComment () {
 		const { channel, currentUser } = this.props;
+		import { Channel } from '../api/channels.js';
 		const comment = ReactDOM.findDOMNode(this.refs.commentInput).value.trim();
 		ReactDOM.findDOMNode(this.refs.commentInput).value = '';
 		channel.addComment(currentUser, comment)
@@ -42,6 +43,7 @@ class CommentsList extends Component {
 						);
 					})}
 				</ul>
+
 				<input
 					type="text"
 					ref="commentInput"
@@ -49,6 +51,7 @@ class CommentsList extends Component {
 					onClick={() => channel.updateLastRead(currentUser)}
 				/>
 				<button onClick={this.handleComposeComment}>Send</button>
+
 			</div>
 		)
 	}
