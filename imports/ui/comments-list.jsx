@@ -11,8 +11,10 @@ class CommentsList extends Component {
 		const { channel, currentUser } = this.props;
 		import { Channel } from '../api/channels.js';
 		const comment = ReactDOM.findDOMNode(this.refs.commentInput).value.trim();
-		ReactDOM.findDOMNode(this.refs.commentInput).value = '';
-		channel.addComment(currentUser, comment)
+		if (comment) {
+			channel.addComment(currentUser, comment)
+			ReactDOM.findDOMNode(this.refs.commentInput).value = '';
+		}
 	}
 
 	handleComposeComment = () => {
@@ -25,24 +27,33 @@ class CommentsList extends Component {
 		const memberSelf = channel.members[currentUser._id] ? channel.members[currentUser._id] : null
 
 		return (
-			<div>
-				<ul>
+			<div className="comments-list">
+				<div>
 					{comments.length > 0 && comments.map(comment => {
 
 						return (
-							<li key={comment._id}>
-								<span
+							<div
+								key={comment._id}
+								className="comment-container"
+							>
+								<div
+									className="comment-author"
+								>
+									{comment.username} - {moment(comment.createdAt).fromNow()}
+								</div>
+								<div
+									className="comment-body"
 									style={{
-										color: moment(memberSelf.lastViewedAt).isBefore(comment.createdAt) ? 'green' : 'black'
+										color: moment(memberSelf.lastViewedAt).isBefore(comment.createdAt) ? 'navy' : 'black'
 									}}
 									onClick={() => channel.updateLastRead(currentUser)}
 								>
-									{comment.comment} {comment.username}
-								</span>
-							</li>
+									{comment.comment}
+								</div>
+							</div>
 						);
 					})}
-				</ul>
+				</div>
 
 				<input
 					type="text"

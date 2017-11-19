@@ -42,20 +42,22 @@ class App extends Component {
 
 				<AccountsUIWrapper />
 
-				{currentUser && channels &&
-					<ChannelsList
-						currentChannelId={currentChannelId}
-						currentUser={currentUser}
-						channels={channels}
-						handleChannelClick={this.handleChannelClick}
-						/>
-				}
+				<div className="chat-container">
+					{currentUser && channels &&
+						<ChannelsList
+							currentChannelId={currentChannelId}
+							currentUser={currentUser}
+							channels={channels}
+							handleChannelClick={this.handleChannelClick}
+							/>
+					}
 
-				{currentChannelId && channels &&
-					<CommentsList
-						currentChannelId={currentChannelId}
-					/>
-				}
+					{currentChannelId && channels &&
+						<CommentsList
+							currentChannelId={currentChannelId}
+							/>
+					}
+				</div>
 
 			</div>
 		);

@@ -1,0 +1,51 @@
+.chat-container {
+	display: flex;
+}
+.channel-title {
+	flex-wrap: nowrap;
+	display: flex;
+	font-size: 1.2em;
+}
+.channel-members-list {
+	font-size: 0.8em;
+}
+.channels-list {
+	padding: 12px;
+	width: 200px;
+	background-color: rebeccapurple;
+	color: honeydew;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
+	font-weight: 200;
+}
+.comments-list {
+	padding: 12px;
+	width: 200px;
+	background-color: wheat;
+	color: black;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
+	font-weight: 200;
+}
+.unreadBadge {
+	align-items: center;
+	text-align: center;
+	margin: 2px;
+	background-color: red;
+	border-radius: 10px;
+	width: 25px;
+}
+.comment-container {
+	margin-top: 6px;
+	margin-bottom: 8px;
+}
+.comment-body {
+	color: black;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
+	font-weight: 200;
+	font-size: 1em;
+}
+.comment-author {
+	color: black;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
+	font-weight: 600;
+	font-size: 0.8em;
+}

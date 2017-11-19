@@ -7,11 +7,14 @@ export default class ChannelsList extends PureComponent {
 
 	handleSendChannel () {
 		const { currentUser } = this.props;
-		Channel.createChannel({
-			name: ReactDOM.findDOMNode(this.refs.channelInput).value.trim(),
-			user: currentUser,
-		})
-		ReactDOM.findDOMNode(this.refs.channelInput).value = '';
+		const newChannelName = ReactDOM.findDOMNode(this.refs.channelInput).value.trim()
+		if (newChannelName) {
+			Channel.createChannel({
+				name: newChannelName,
+				user: currentUser,
+			})
+			ReactDOM.findDOMNode(this.refs.channelInput).value = '';
+		}
 	}
 
 	handleCreateChannel = () => {
@@ -21,9 +24,8 @@ export default class ChannelsList extends PureComponent {
 	render() {
 		const { currentChannelId, currentUser, channels, handleChannelClick } = this.props;
 		return (
-			<div>
-				Channels
-				<ul>
+			<div className="channels-list">
+				<div>
 					{channels.length > 0 && channels.map(channel => {
 
 						const memberNames = Object.keys(channel.members).map(member => {
@@ -37,15 +39,23 @@ export default class ChannelsList extends PureComponent {
 						})
 
 						return (
-							<li key={channel._id}>
-								<h3>{name}<span>{unReadComments ? ` (${unReadComments.length}!) ` : ' ' }</span></h3>
-								<span>Members: {memberNames.join(', ')}</span>
+							<div key={channel._id}>
+								<div className="channel-title" style={{ fontWeight: '400' }}>
+									{name}
+									{unReadComments.length > 0 &&
+										<div className="unreadBadge">{unReadComments.length}</div>
+									}
+								</div>
+								<br />
+								<span className="channel-members-list">Members: {memberNames.join(', ')}</span>
 								<br />
 								<button onClick={handleChannelClick(channel._id)}>Select</button>
-							</li>
+								<br />
+								<br />
+							</div>
 						);
 					})}
-				</ul>
+				</div>
 
 				<input
 					type="text"
