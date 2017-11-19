@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
+import { Meteor } from 'meteor/meteor';
 
 import { Channel } from '../api/channels.js';
+import AccountsUIWrapper from './accounts-ui-wrapper.jsx';
 
 class App extends Component {
 
 	render() {
-		const { channels } = this.props;
+		const { channels, currentUser } = this.props;
 		console.log('channels',channels);
+		console.log('currentUser',currentUser);
 		return (
 			<div className="container">
+
+				<AccountsUIWrapper />
 
 				<div>
 					Channels
@@ -35,5 +40,6 @@ class App extends Component {
 export default createContainer(() => {
 	return {
 		channels: Channel.find({}).fetch(),
+		currentUser: Meteor.user(),
 	};
 }, App);
