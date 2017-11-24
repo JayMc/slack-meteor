@@ -26,6 +26,7 @@ const Channel = Class.create({
 			if (user) {
 				const { _id, username } = user
 				this.members[_id] = {
+					userId: _id,
 					username,
 					lastViewedAt: new Date(),
 				}

@@ -12,4 +12,5 @@ Create a very basic Slack like chat app to fulfill the below objectives using a 
 - [ ] Display unread and day separation line in comments list
 - [ ] User online status
 - [ ] User is typing
-- [ ] Preview last message in channel
+- [ ] Preview last message in channel (without being in channel)
+- [ ] Invite or add users to channel
