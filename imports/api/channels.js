@@ -48,29 +48,41 @@ const Channel = Class.create({
 			}
 
 			// add new comment to the end
-			this.recentComments = [
-				// existing comments
-				...this.recentComments,
-				// new comment
-				{
-					_id: Random.id(17),
-					userId: _id,
-					username,
-					comment,
-					createdAt: new Date()
-				},
-			]
+			this.set({
+				recentComments: [
+					// existing comments
+					...this.recentComments,
+					// new comment
+					{
+						_id: Random.id(17),
+						userId: _id,
+						username,
+						comment,
+						createdAt: new Date()
+					},
+				]
+			});
 
-			return this.save();
+			return this.save(() => {
+				return this.setIsTyping(user, null);
+			});
 		},
 
 		setIsTyping(user, isTyping) {
+			console.log('setIsTyping');
 			if (user) {
 				const { _id, username } = user
-				this.members[_id] = {
+
+				const newMembers = this.members
+				newMembers[_id] = {
 					...this.members[_id],
 					isTyping,
 				}
+
+				this.set({
+					members: newMembers
+				})
+
 				return this.save()
 			}
 			else {

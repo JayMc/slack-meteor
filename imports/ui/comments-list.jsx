@@ -20,8 +20,12 @@ class CommentsList extends Component {
 		import { Channel } from '../api/channels.js';
 		const comment = ReactDOM.findDOMNode(this.refs.commentInput).value.trim();
 		if (comment) {
-			channel.addComment(currentUser, comment)
-			ReactDOM.findDOMNode(this.refs.commentInput).value = '';
+			// channel.addComment(currentUser, comment, (err, result) => {
+			channel.callMethod('addComment', currentUser, comment, (err, result) => {
+				if (result) {
+					ReactDOM.findDOMNode(this.refs.commentInput).value = '';
+				}
+			})
 		}
 	}
 
