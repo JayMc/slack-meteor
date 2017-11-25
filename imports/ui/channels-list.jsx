@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
 import Channel from '../api/channels.js';
+import ChannelItem from './channel-item.jsx';
 
 export default class ChannelsList extends PureComponent {
 
@@ -22,16 +23,21 @@ export default class ChannelsList extends PureComponent {
 	}
 
 	render() {
-		const { currentChannelId, currentUser, channels, handleChannelClick } = this.props;
+		const { currentChannelId, currentUser, channels, usersTyping, handleChannelClick } = this.props;
+
 		return (
 			<div className="channels-list">
 				<div>
-					{channels.length > 0 && channels.map(channel => {
-
+					{!!channels && channels.length === 0 &&
+						<p>No channels</p>
+					}
+					{!!channels && channels.length > 0 && channels.map(channel => {
+						// get member names
 						const memberNames = Object.keys(channel.members).map(member => {
 							return channel.members[member].username ? channel.members[member].username : 'unknown'
 						});
-						const name = channel.name
+
+						// get currentUser unread count
 						const memberSelf = channel.members[currentUser._id] ? channel.members[currentUser._id] : null
 						const unReadComments = channel.recentComments.filter(comment => {
 							// unread comments are of a date more recent than the user lastViewedAt
@@ -39,28 +45,23 @@ export default class ChannelsList extends PureComponent {
 						})
 
 						return (
-							<div key={channel._id}>
-								<div className="channel-title" style={{ fontWeight: '400' }}>
-									{name}
-									{unReadComments.length > 0 &&
-										<div className="unreadBadge">{unReadComments.length}</div>
-									}
-								</div>
-								<br />
-								<span className="channel-members-list">Members: {memberNames.join(', ')}</span>
-								<br />
-								<button onClick={handleChannelClick(channel._id)}>Select</button>
-								<br />
-								<br />
-							</div>
+							<ChannelItem
+								key={channel._id}
+								channel={channel}
+								unReadComments={unReadComments}
+								memberNames={memberNames}
+								usersTyping={usersTyping[channel._id]}
+								handleChannelClick={handleChannelClick}
+							/>
 						);
 					})}
 				</div>
+				<br />
 
 				<input
 					type="text"
 					ref="channelInput"
-					placeholder="channel"
+					placeholder="new channel"
 				/>
 			<button onClick={this.handleCreateChannel}>Create</button>
 

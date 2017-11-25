@@ -4,8 +4,15 @@ import { createContainer } from 'meteor/react-meteor-data';
 import moment from 'moment';
 
 import Channel from '../api/channels.js';
+import IsTyping from './is-typing.jsx';
 
 class CommentsList extends Component {
+
+	handleIsTyping () {
+		const { channel, currentUser } = this.props;
+		const comment = ReactDOM.findDOMNode(this.refs.commentInput).value.trim();
+		channel.setIsTyping(currentUser, comment ? moment().add(30, 'seconds').format() : null)
+	}
 
 	handleSendComment () {
 		const { channel, currentUser } = this.props;
@@ -22,7 +29,7 @@ class CommentsList extends Component {
 	}
 
 	render() {
-		const { currentChannelId, channel, currentUser } = this.props;
+		const { currentChannelId, channel, usersTyping, currentUser } = this.props;
 		const comments = channel.recentComments;
 		const memberSelf = channel.members[currentUser._id] ? channel.members[currentUser._id] : null
 
@@ -53,7 +60,7 @@ class CommentsList extends Component {
 								<div
 									className="comment-body"
 									style={{
-										color: moment(memberSelf.lastViewedAt).isBefore(comment.createdAt) ? 'navy' : 'black'
+										color: moment(memberSelf.lastViewedAt).isBefore(comment.createdAt) ? 'navy' : 'black',
 									}}
 									onClick={() => channel.updateLastRead(currentUser)}
 								>
@@ -86,6 +93,11 @@ class CommentsList extends Component {
 					ref="commentInput"
 					placeholder="comment"
 					onClick={() => channel.updateLastRead(currentUser)}
+					onKeyUp ={() => this.handleIsTyping()}
+				/>
+				<IsTyping
+					usersTyping={usersTyping}
+					inSideChannel={true}
 				/>
 				<button onClick={this.handleComposeComment}>Send</button>
 

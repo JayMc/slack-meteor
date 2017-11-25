@@ -29,6 +29,7 @@ const Channel = Class.create({
 					userId: _id,
 					username,
 					lastViewedAt: new Date(),
+					isTyping: null,
 				}
 				return this.save()
 			}
@@ -62,6 +63,20 @@ const Channel = Class.create({
 
 			return this.save();
 		},
+
+		setIsTyping(user, isTyping) {
+			if (user) {
+				const { _id, username } = user
+				this.members[_id] = {
+					...this.members[_id],
+					isTyping,
+				}
+				return this.save()
+			}
+			else {
+				return false
+			}
+		}
 
 	}
 });
