@@ -5,6 +5,7 @@ import moment from 'moment';
 
 import Channel from '../api/channels.js';
 import IsTyping from './is-typing.jsx';
+import ReadReceipt from './read-receipt.jsx';
 
 class CommentsList extends Component {
 
@@ -47,6 +48,7 @@ class CommentsList extends Component {
 								return member.userId !== currentUser._id && moment(member.lastViewedAt).isAfter(readReceiptMessage.createdAt);
 							});
 						}
+						const memberCount = Object.keys(channel.members).length;
 						return (
 							<div
 								key={comment._id}
@@ -67,22 +69,11 @@ class CommentsList extends Component {
 									{comment.comment}
 								</div>
 
-								{/* Show read receipt for last comment*/}
-								{readReceiptMessage && readReceipt.length === 1 &&
-									<div
-										className="comment-receipt-delivery"
-										>
-											✔
-									</div>
-								}
-								{/* 2 ticks if more than 1 member has viewed it */}
-								{readReceiptMessage && readReceipt.length > 1 &&
-									<div
-										className="comment-receipt-delivery"
-										>
-											✔✔
-									</div>
-								}
+								<ReadReceipt
+									readReceipt={readReceipt}
+									readReceiptMessage={readReceiptMessage}
+									memberCount={memberCount}
+								/>
 							</div>
 						);
 					})}

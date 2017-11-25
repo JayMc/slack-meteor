@@ -5,7 +5,7 @@ Create a very basic Slack like chat app to fulfill the below objectives using a 
 - [x] Each user having own unread count for each channel
 - [ ] User roles [admin, user]
 - [x] Channel member list
-- [ ] Message read receipt
+- [x] Message read receipt
 
 # Secondary objectives (nice to have)
 - [ ] Comment pagination
