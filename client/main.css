@@ -11,6 +11,20 @@
 }
 .channel-members-list {
 	font-size: 0.8em;
+	color: lightgrey;
+
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.channel-last-message {
+	font-style: italic;
+	color: lightgrey;
+	font-size: 0.8em;
+
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 }
 .channels-list {
 	padding: 12px;
@@ -22,11 +36,13 @@
 }
 .comments-list {
 	padding: 12px;
-	width: 200px;
+	width: 400px;
 	background-color: wheat;
 	color: black;
 	font-family: Helvetica, Verdana, Arial, sans-serif;
 	font-weight: 200;
+
+	overflow-wrap: break-word;
 }
 .unreadBadge {
 	align-items: center;
@@ -45,6 +61,11 @@
 	font-family: Helvetica, Verdana, Arial, sans-serif;
 	font-weight: 200;
 	font-size: 1em;
+}
+.comment-time-ago {
+	color: grey;
+	font-weight: 200;
+	padding: 0px 5px;
 }
 .comment-author {
 	color: black;

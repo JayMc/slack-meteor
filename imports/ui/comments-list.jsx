@@ -60,7 +60,12 @@ class CommentsList extends Component {
 								<div
 									className="comment-author"
 								>
-									{comment.username} - {moment(comment.createdAt).fromNow()}
+									<span>
+										{comment.username}
+									</span>
+									<span className="comment-time-ago">
+										{moment(comment.createdAt).fromNow()}
+									</span>
 								</div>
 								<div
 									className="comment-body"

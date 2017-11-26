@@ -12,6 +12,8 @@ export default class ChannelItem extends PureComponent {
 		const selectedStyle = channel._id === currentChannelId ? {
 			background: 'darkviolet',
 		} : {}
+		const lastMessage = channel.recentComments ? channel.recentComments[channel.recentComments.length-1] : null;
+
 		return (
 			<div onClick={handleChannelClick(channel._id)} >
 				<div
@@ -29,7 +31,10 @@ export default class ChannelItem extends PureComponent {
 					}
 				</div>
 
-				<span className="channel-members-list">Members: {memberNames.join(', ')}</span>
+				<span className="channel-members-list">{memberNames.join(', ')}</span>
+				{lastMessage &&
+					<div className="channel-last-message">{`"${lastMessage.comment}"`}</div>
+				}
 				<br />
 				<br />
 			</div>
