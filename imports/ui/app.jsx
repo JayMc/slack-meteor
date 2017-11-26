@@ -25,10 +25,16 @@ class App extends Component {
 		// update last read
 		const channel = channels.find(channel => channel._id === id)
 
-		// delay so the user has time to see what is new when they enter the channel
-		setTimeout(() => {
-			channel.updateLastRead(currentUser);
-		}, 3000)
+		// check if a member
+		const memberSelf = channel.members[currentUser._id] ? channel.members[currentUser._id] : null
+
+		if (memberSelf) {
+			// delay so the user has time to see what is new when they enter the channel
+			setTimeout(() => {
+				channel.updateLastRead(currentUser);
+			}, 3000);
+		}
+
 	}
 
 	handleChannelClick = (id) => {
@@ -71,11 +77,19 @@ class App extends Component {
 							/>
 					}
 
-					{!currentChannelId &&
+					{channels.length > 0 && !currentChannelId &&
 						<div
 							className="channel-not-selected"
 						>
 						{`<-- select a channel`}
+						</div>
+					}
+
+					{channels.length === 0 &&
+						<div
+							className="channel-not-selected"
+						>
+						{`<-- create a channel`}
 						</div>
 					}
 				</div>

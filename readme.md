@@ -28,6 +28,7 @@ Channel Schema
 			username: String,
 			lastViewedAt: Date, // supports unread count and read receipt
 			isTyping: Date, // set a date 30 seconds in the future to expire is typing status
+			roles: Array,
 		},
 	},
 	recentComments: [ // fixed length array for recent comments - older comments are shifted off (deleted)

@@ -1,7 +1,8 @@
 import { Class } from 'meteor/jagi:astronomy';
 import { Mongo } from 'meteor/mongo';
-import { Random } from 'meteor/random'
+import { Random } from 'meteor/random';
 
+import { roles, canPost } from '../common/polices';
 const Channels = new Mongo.Collection('channels');
 const recentCommentsLimit = 10;
 
@@ -26,8 +27,7 @@ const Channel = Class.create({
 			if (user) {
 				const { _id, username } = user
 				this.members[_id] = {
-					userId: _id,
-					username,
+					...this.members[_id],
 					lastViewedAt: new Date(),
 					isTyping: null,
 				}
@@ -38,9 +38,28 @@ const Channel = Class.create({
 			}
 		},
 
+		join (user) {
+			const { _id, username } = user
+			this.members[_id] = {
+				userId: _id,
+				username,
+				roles: [roles.ADMIN, roles.MEMBER],
+				lastViewedAt: new Date(),
+				isTyping: null,
+			}
+			return this.save()
+
+		},
+
 		// keeping recentComments a fixed length
 		addComment(user, comment) {
 			const { _id, username } = user
+
+			// check user is a member and has a role
+			if (!canPost(this.members[_id].roles)) {
+				throw new Meteor.Error(403, 'Forbidden', 'No privilege to submit comment')
+			}
+
 			// check recentComments size is over limit
 			if (this.recentComments.length >= recentCommentsLimit) {
 				// remove the first - oldest comment
@@ -106,8 +125,11 @@ Channel.createChannel = (newChannel) => {
 	channel.createdAt = new Date()
 	channel.members = {}
 	channel.members[userId] = {
+		userId: userId,
 		username,
 		lastViewedAt: new Date(),
+		isTyping: null,
+		roles: [roles.OWNER, roles.ADMIN, roles.MEMBER],
 	}
 	return channel.save()
 }

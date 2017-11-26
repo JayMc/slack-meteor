@@ -84,7 +84,11 @@
 	font-size: 1.5em;
 	color: rebeccapurple;
 }
-
+.comments-list-no-joined {
+	align-self: center;
+	text-align: center;
+	width: 100%;
+}
 
 .typing-indicator {
 	will-change: transform;
