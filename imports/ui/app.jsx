@@ -3,6 +3,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 
+import { membersTypingByChannel } from '../common/is-typing';
 import Channel from '../api/channels.js';
 import AccountsUIWrapper from './accounts-ui-wrapper.jsx';
 import ChannelsList from './channels-list.jsx';
@@ -45,24 +46,7 @@ class App extends Component {
 		const { channels, currentUser } = this.props;
 		const { currentChannelId } = this.state;
 
-		// check if any members (other than self) are typing
-		// returns an object each key as channel id and value is array of members who are typing
-		let usersTyping = [];
-		if (currentUser) {
-			usersTyping = channels.reduce((acc, channel) => {
-				acc[channel._id] = [];
-
-				Object.keys(channel.members).map(m => {
-					const member = channel.members[m];
-					// if isTyping expires in the futgiture add the member to the list
-					if (member.userId !== currentUser._id && moment(member.isTyping).isAfter()) {
-						acc[channel._id].push(member.username);
-					}
-				})
-
-				return acc;
-			}, {});
-		}
+		const allUsersTyping = currentUser && channels ? membersTypingByChannel(currentUser, channels) : {};
 
 		return (
 			<div className="container">
@@ -76,15 +60,23 @@ class App extends Component {
 							currentUser={currentUser}
 							channels={channels}
 							handleChannelClick={this.handleChannelClick}
-							usersTyping={usersTyping}
+							allUsersTyping={allUsersTyping}
 							/>
 					}
 
 					{currentChannelId && channels &&
 						<CommentsList
 							currentChannelId={currentChannelId}
-							usersTyping={usersTyping[currentChannelId]}
+							usersTyping={allUsersTyping[currentChannelId]}
 							/>
+					}
+
+					{!currentChannelId &&
+						<div
+							className="channel-not-selected"
+						>
+						{`<-- select a channel`}
+						</div>
 					}
 				</div>
 

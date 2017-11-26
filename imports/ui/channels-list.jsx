@@ -23,7 +23,7 @@ export default class ChannelsList extends PureComponent {
 	}
 
 	render() {
-		const { currentChannelId, currentUser, channels, usersTyping, handleChannelClick } = this.props;
+		const { currentChannelId, currentUser, channels, allUsersTyping, handleChannelClick } = this.props;
 
 		return (
 			<div className="channels-list">
@@ -44,13 +44,16 @@ export default class ChannelsList extends PureComponent {
 							return memberSelf && channel._id !== currentChannelId && moment(memberSelf.lastViewedAt).isBefore(comment.createdAt);
 						})
 
+						const usersTyping = allUsersTyping[channel._id] ? allUsersTyping[channel._id] : [];
+
 						return (
 							<ChannelItem
 								key={channel._id}
+								currentChannelId={currentChannelId}
 								channel={channel}
 								unReadComments={unReadComments}
 								memberNames={memberNames}
-								usersTyping={usersTyping[channel._id]}
+								usersTyping={usersTyping}
 								handleChannelClick={handleChannelClick}
 							/>
 						);

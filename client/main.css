@@ -4,7 +4,10 @@
 .channel-title {
 	flex-wrap: nowrap;
 	display: flex;
-	font-size: 1.2em;
+	font-size: 1em;
+	font-weight: 400;
+	border-radius: 10px;
+	padding: 0px 5px;
 }
 .channel-members-list {
 	font-size: 0.8em;
@@ -52,6 +55,13 @@
 .comment-receipt-delivery {
 	text-align: right;
 	color: grey;
+}
+.channel-not-selected {
+	align-self: center;
+	text-align: center;
+	width: 100%;
+	font-size: 1.5em;
+	color: rebeccapurple;
 }
 
 

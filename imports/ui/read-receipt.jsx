@@ -7,6 +7,7 @@ export default class ReadReceipt extends PureComponent {
 
 		return (
 			<div>
+
 				{/* Show read receipt for last comment*/}
 				{readReceiptMessage && readReceipt.length < memberCount - 1 && readReceipt.length === 1 &&
 					<div
@@ -15,14 +16,16 @@ export default class ReadReceipt extends PureComponent {
 							✔
 					</div>
 				}
+
 				{/* 2 ticks if more than 1 member has viewed it */}
-				{readReceiptMessage && readReceipt.length === memberCount - 1 &&
+				{readReceiptMessage && readReceipt.length === memberCount - 1 && readReceipt.length > 0 &&
 					<div
 						className="comment-receipt-delivery"
 						>
 							✔✔
 					</div>
 				}
+
 			</div>
 		)
 	}

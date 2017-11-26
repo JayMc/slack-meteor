@@ -7,10 +7,17 @@ import IsTyping from './is-typing.jsx'
 export default class ChannelItem extends PureComponent {
 
 	render() {
-		const { channel, unReadComments, memberNames, usersTyping, handleChannelClick } = this.props;
+		const { channel, currentChannelId, unReadComments, memberNames, usersTyping, handleChannelClick } = this.props;
+
+		const selectedStyle = channel._id === currentChannelId ? {
+			background: 'darkviolet',
+		} : {}
 		return (
-			<div>
-				<div className="channel-title" style={{ fontWeight: '400' }}>
+			<div onClick={handleChannelClick(channel._id)} >
+				<div
+					className="channel-title"
+					style={selectedStyle}
+				>
 					{channel.name}
 					{unReadComments.length > 0 &&
 						<div className="unreadBadge">{unReadComments.length}</div>
@@ -24,7 +31,6 @@ export default class ChannelItem extends PureComponent {
 
 				<span className="channel-members-list">Members: {memberNames.join(', ')}</span>
 				<br />
-				<button onClick={handleChannelClick(channel._id)}>Select</button>
 				<br />
 			</div>
 		)

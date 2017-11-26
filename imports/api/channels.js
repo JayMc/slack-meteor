@@ -69,7 +69,6 @@ const Channel = Class.create({
 		},
 
 		setIsTyping(user, isTyping) {
-			console.log('setIsTyping');
 			if (user) {
 				const { _id, username } = user
 
